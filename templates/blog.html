@@ -1,4 +1,19 @@
 {% extends 'base.html' %}
+
 {% block content %}
+
 <h1>Build a Blog</h1><br>
+
+{% if all_blogs|length == 0 %}
+    <p>There's no Blogs yet</p>
+{% else %}  
+    {% for single_blog in all_blogs %}
+        <div class='blogbody'>
+            <h2> class = 'blog_title'><a href='/?id={{blog.id}}' >{{blog.title}}</a></h2>
+            <p class = 'blog'>{{blog.body}}</p>
+        </div>
+    {% endfor %}
+{% endif %}            
+<p>Hang on we'll be right back!</p>
 {% endblock %}
+ 

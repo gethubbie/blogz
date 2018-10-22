@@ -1,17 +1,30 @@
 <!doctype html>
 <html>
     <head>
-        <title>{{title}}</title>
+    <title>Pam's Example Blog</title>
+     </head>   
         <style>
             .error{
             color: purple;
             }
         </style>
-    </head>
-    <body>
-        <div class="links">
+        <body>
+            <header>
+                <h1>LC101 Build a Blog</h1>
+            </header>    
+            <nav class="header">
         <a href="/blog">Post</a>
-        <a herf="/newpost">Create Post</a>    
+        <a herf="/newpost">Create Post</a>   
+            </nav>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% for category,message in messages %}
+                    <div class="flash_message">{{message|safe}}</div>
+                {% endfor %}
+            {% endwith %}        
 
-</body>
+
+        {% block content %}
+        {% endblock %}
+
+    </body>
 </html>
