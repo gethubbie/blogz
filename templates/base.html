@@ -10,16 +10,19 @@
         </style>
         <body>
             <header>
-                <h1>LC101 Build a Blog</h1>
-            </header>    
-            <nav class="header">
-        <a href="/blog">Post</a>
-        <a herf="/newpost">Create Post</a>   
-            </nav>
+    
+                <nav><a href="/blog">Add a Blog Entry</a><br><a href="/newpost">Main Blog Page</a>
+                </nav>            
+            </header>  
+           
             {% with messages = get_flashed_messages(with_categories=True) %}
-                {% for category,message in messages %}
-                    <div class="flash_message">{{message|safe}}</div>
+            <ul>
+                {% for category, message in messages %}
+                    <li class ='{{catetory}}'>{{message}}</li>
+                    
+
                 {% endfor %}
+            </ul>    
             {% endwith %}        
 
 

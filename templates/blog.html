@@ -2,17 +2,19 @@
 
 {% block content %}
 
-<h1>Build a Blog</h1><br>
+<h1 align='center'> Build a Blog</h1><br>
 
 {% if all_blogs|length == 0 %}
-    <p>There's no Blogs yet</p>
-{% else %}  
+    <p>There's No Blogs Yet</p>
+{% else %} 
+    <ul type='none'>
     {% for single_blog in all_blogs %}
-        <div class='blogbody'>
-            <h2> class = 'blog_title'><a href='/?id={{blog.id}}' >{{blog.title}}</a></h2>
+        <div class='single_body'>
+            <h2> class = 'title'><a href='/?id={{blog.id}}' >{{blog.title}}</a></h2>
             <p class = 'blog'>{{blog.body}}</p>
         </div>
     {% endfor %}
+    </ul>
 {% endif %}            
 <p>Hang on we'll be right back!</p>
 {% endblock %}
