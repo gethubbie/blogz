@@ -25,29 +25,39 @@ def index():
 @app.route('/newpost', methods=["POST", "GET"])
 def newpost():
     if request.method == "POST":
-        blog_title = request.form["title"]
-        blog_body = request.form["body"]
-        if blog_title == "" or blog_body == "":
-           flash("DO NOT leave this field empty, please fill in both fields", 'error')
-           render_template(newpost.html, title="Build a Blog", blog_body=new_blog)
-        else:
+        blog_title = request.form["blog_title"]
+        blog_body = request.form["blog_body"]
+        title_error = ""
+        body_error = ""
+
+        if blog_title == "":
+            title_error = "Please provide a title!"
+        if blog_body == "":
+            body_error = "Please provide a body!"
+
+        if blog_title != "" and blog_body != "":
+            
+
             new_blog = Blog(blog_title, blog_body)
             db.session.add(new_blog)
             db.session.commit()
             url = '/blog?id=' + str(new_blog.id)
             return redirect (url)
- 
-    return render_template("newpost.html", title="Build a Blog")       
+          
+        else:   
+            return render_template('newpost.html', body_error=body_error, title_error=title_error)    
+    else:
+        return render_template('newpost.html')          
 
 @app.route('/blog', methods=["POST", "GET"])
 def blog():
     single_blog = request.args.get('id')
     if single_blog:
-        return render_template('single_blog.html', title='Build a Blog', post=get_blog(single_blog))
+        return render_template('single.html', title='single_blog', single_blog=Blog.query.get(single_blog))
        
     else:
         all_blogs = Blog.query.all()
-        return render_template('blog.html', title='Build a Blog', blog=all_blogs)
+        return render_template('blog.html', title='Build a Blog', all_blogs=all_blogs)
 
 if __name__ == '__main__':
     app.run()

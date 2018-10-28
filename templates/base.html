@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-    <title>Pam's Example Blog</title>
+    <title>{{title}}</title>
      </head>   
         <style>
             .error{
@@ -11,20 +11,9 @@
         <body>
             <header>
     
-                <nav><a href="/blog">Add a Blog Entry</a><br><a href="/newpost">Main Blog Page</a>
+                <nav><a href="/newpost">Add a Blog Entry</a><br><a href="/blog">Main Blog Page</a>
                 </nav>            
             </header>  
-           
-            {% with messages = get_flashed_messages(with_categories=True) %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class ='{{catetory}}'>{{message}}</li>
-                    
-
-                {% endfor %}
-            </ul>    
-            {% endwith %}        
-
 
         {% block content %}
         {% endblock %}
