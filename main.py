@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:wannaHedoit@localhost:8889/build-a-blogz'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:wannaHedoit@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 app.secret_key = 'jeremiah33:3ephesians3:20isaiah54:17'
@@ -32,7 +32,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup','blog', 'index']
+    allowed_routes = ['login', 'signup', 'newpost', '']
     if request.endpoint not in allowed_routes and 'username' not in session:
 return redirect('/login')       
 
@@ -94,7 +94,7 @@ def blog():
 
 @app.route('/')
 def index():
-    usernames = User.query(User.username).all()
+    usernames = User.query.order_by(User.id.desc()).all()
     return render_template('index.html', usernames = usernames)
 
 @app.route('/signup', methods = ['POST', 'GET'])
@@ -162,7 +162,7 @@ def login():
 @app.route('/logout')
 def logout():
     del session['username']
-    return redirect('/')
+    return redirect('/blog')
 
 if __name__ == '__main__':
     app.run()

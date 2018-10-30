@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1 align='center'>Pam's Successful Yard Sale</h1><br>
+<h1>Posts</h1><br><br>
 
 {% if all_blogs|length == 0 %}
     <p>There's No Blogs Yet</p>
@@ -11,7 +11,7 @@
     {% for single_blog in all_blogs %}
         <h2><a href='/?id={{single_blog.id}}' >{{single_blog.title}}</a></h2>
         <p>{{single_blog.body}}</p>
-        
+        <h4>written by: <a href="/blog?userid={{single.owner_id}}">{{single.owner.username }}</a></h4>
     {% endfor %}
     
 {% endif %}            

@@ -2,18 +2,27 @@
 <html>
     <head>
     <title>{{title}}</title>
-     </head>   
+    </head>   
         <style>
             .error{
             color: purple;
             }
         </style>
+    </head>
         <body>
-            <header>
-    
-                <nav><a href="/newpost">Add a Blog Entry</a><br><a href="/blog">Main Blog Page</a>
-                </nav>            
-            </header>  
+            <nav>
+                <ul>
+                    <li><a href='/login'>login</a></li>
+                    <li><a href='lougout'>logout</a></li> 
+                </ul>
+                <ul> 
+                    <li><a href='/'>home</a></li> 
+                    <li><a href="/newpost">New Post</a></li>
+                    <li><a href="/blog">All Posts</a></li>li>
+                </ul>    
+            </nav>     
+                   
+<h1>Blog Users!</h1>             
 
         {% block content %}
         {% endblock %}
