@@ -8,7 +8,7 @@
             color: purple;
             }
         </style>
-    </head>
+    
         <body>
             <nav>
                 <ul>
@@ -20,12 +20,20 @@
                     <li><a href="/newpost">New Post</a></li>
                     <li><a href="/blog">All Posts</a></li>
                 </ul>    
-            </nav>     
+            </nav> 
                    
-<h1>Blog Users!</h1>             
+<h1>Blog Users!</h1>  
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        <ul>
+        {% for category,message in messages %}
+            <li class="{{category}}">{{message}}</li>
+        {% endfor %}
+        </ul>
+    {% endwith %}
 
         {% block content %}
         {% endblock %}
 
-        </body>
+    </body>
 </html>
