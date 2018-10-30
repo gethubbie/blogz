@@ -24,7 +24,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)    
     username = db.Column(db.String(50))
     password = db.Column(db.String(50))
-    blogs = db.relationship('Blog', backref = 'owner')
+    blogs = db.relationship('Blog', backref ='owner')
 
     def __init__(self, username, password):
         self.username = username
@@ -32,9 +32,9 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', 'newpost', '']
+    allowed_routes = ['login', 'signup',  '/', 'newpost']
     if request.endpoint not in allowed_routes and 'username' not in session:
-return redirect('/login')       
+        return redirect('/login')       
 
 #@app.route('/')
 #def index():
@@ -55,24 +55,24 @@ def newpost():
 
         if blog_title != "" and blog_body != "":
 
-        username = User.query.filter_by(username = session['username']).first()   
-            new_blog = Blog(blog_title, blog_body, username)
+            user = User.query.filter_by(username = session['user']).first()   
+            new_blog = Blog(blog_title, blog_body, user)
             db.session.add(new_blog)
             db.session.commit()
             url = '/blog?id=' + str(new_blog.id)
             return redirect (url)
 
-    if request.args.get('username'):
-        userid = request.args.get('username')
-        username = User.query.get(userid)
-        your_name = username.username
-        blogs = username.blogs
+    if request.args.get('user'):
+        userid = request.args.get('user')
+        user = User.query.get(userid)
+        your_name = user.username
+        blogs = user.blogs
         return render_template('singleUser.html', username = your_name, blogs=blogs)
 
     if request.args.get('id'):
         blogid= request.args.get('id')
         single_blog = Blog.query.get(blogid)
-        return render_template('single.html', single_blog=single_blog) # title=blog.title, body=blog.body)
+        return render_template('single.html', single_blog=single_blog) 
         blogs = Blog.query.all()
         return render_template('blog.html', blogs=blogs)
 
@@ -94,8 +94,8 @@ def blog():
 
 @app.route('/')
 def index():
-    usernames = User.query.order_by(User.id.desc()).all()
-    return render_template('index.html', usernames = usernames)
+    users = User.query.order_by(User.id.desc()).all()
+    return render_template('index.html', users=users)
 
 @app.route('/signup', methods = ['POST', 'GET'])
 def signup():
@@ -111,7 +111,7 @@ def signup():
         existing_username = User.query.filter_by(username=username).first()
         
         if existing_username:
-            error["username_error"] = "Username already exit!"
+            error["username_error"] = "Username already exist!"
         
         if username == '':
             username_error = 'Username cannot be blank!'
@@ -128,15 +128,15 @@ def signup():
         if verify_password != password:
             verify_password_error = "Passwords do not match.  Please verify password"
 
-        if username_error == "" and password_error == "" and verify_password_error == "":
-            username = User(username, password)
-            db.session.add(username)
-            db.session.commit()
-            session['username'] = username
-        return redirect("/newpost")   
+            if username_error == "" and password_error == "" and verify_password_error == "":
+                new_user = User(username, password)
+                db.session.add(new_user)
+                db.session.commit()
+                session['username'] = username
+                return redirect("/newpost")   
 
-        else:
-            return render_template("signup.html", title="Signup", username=username, username_error=username_error, password_error=password_error, verify_password_error=verify_passwor_error)              
+            else:
+        return render_template("signup.html", title="Signup", username=username, username_error=username_error, password_error=password_error, verify_password_error=verify_passwor_error)              
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
@@ -146,13 +146,13 @@ def login():
         if request.method == 'POST'
         username = request.form['username']
         password = request.form['password']  
-        existing_username = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username).first()
 
-        if existing_username: 
+        if user and user.password == password: 
             session['username'] = username
             return redirect('/newpost')
 
-        if not existing_username:
+        if not user:
             return render_template('login.html', username_error="Username does not exist.")
         else:
             return render_template('login.html', password_error="Username or password was incorrect.")
