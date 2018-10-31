@@ -9,12 +9,13 @@
 {% else %} 
     
     {% for single_blog in all_blogs %}
-        <h2><a href='/?id={{single_blog.id}}' >{{single_blog.title}}</a></h2>
+        <h2><a href='/blog?id={{single_blog.id}}' >{{single_blog.title}}</a></h2>
         <p>{{single_blog.body}}</p>
-        <h4>written by: <a href="/blog?user.id={{single_blog.owner_id}}">{{single_blog.owner.username }}</a></h4>
+        <h4>written by: <a href="/blog?userid={{single_blog.owner.id}}">{{single_blog.owner.username }}</a></h4>
     {% endfor %}
     
 {% endif %}            
 <p>Hang on we'll be right back!</p>
+
 {% endblock %}
  
